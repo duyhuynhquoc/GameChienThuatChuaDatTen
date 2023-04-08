@@ -5,17 +5,23 @@ using UnityEngine;
 public class UnitMover : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 10f;
+    Unit unit;
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        unit = GetComponent<Unit>();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (unit.canMove()) {
+            Move();
+        }
+    }
+
+    public void Move() {
         float x = Time.deltaTime * moveSpeed;
+        
         transform.Translate(x, 0, 0);
     }
 }

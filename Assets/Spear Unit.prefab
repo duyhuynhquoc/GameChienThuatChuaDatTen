@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2315854728338793153}
     m_Modifications:
+    - target: {fileID: 1379821913941810983, guid: 49c0c93f75d5d714ea496870b8687449, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6841786619218095897, guid: 49c0c93f75d5d714ea496870b8687449, type: 3}
       propertyPath: m_Name
       value: Spear1
@@ -16,24 +20,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6841786619218129785, guid: 49c0c93f75d5d714ea496870b8687449, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6841786619218129785, guid: 49c0c93f75d5d714ea496870b8687449, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6841786619218129785, guid: 49c0c93f75d5d714ea496870b8687449, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6841786619218129785, guid: 49c0c93f75d5d714ea496870b8687449, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.233
+      value: -0.313
       objectReference: {fileID: 0}
     - target: {fileID: 6841786619218129785, guid: 49c0c93f75d5d714ea496870b8687449, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.015
+      value: -0.186
       objectReference: {fileID: 0}
     - target: {fileID: 6841786619218129785, guid: 49c0c93f75d5d714ea496870b8687449, type: 3}
       propertyPath: m_LocalPosition.z
@@ -76,6 +68,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6501515306615128322, guid: b9113fbd4b5844e99a3d6462399d8e0f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6630110473688986146, guid: b9113fbd4b5844e99a3d6462399d8e0f, type: 3}
       propertyPath: m_Name
       value: Spear Unit
@@ -123,6 +119,10 @@ PrefabInstance:
     - target: {fileID: 7233204733900948564, guid: b9113fbd4b5844e99a3d6462399d8e0f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7586794953354312669, guid: b9113fbd4b5844e99a3d6462399d8e0f, type: 3}
+      propertyPath: health
+      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9113fbd4b5844e99a3d6462399d8e0f, type: 3}
