@@ -5,7 +5,13 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     [SerializeField] float health = 0f;
-    [SerializeField] float sightRange = 10f;
+    [SerializeField] float hitRange = 10f;
+    [SerializeField] float attackDamage = 0f;
+
+    [Tooltip("Number of attacks perform in 1s")]
+    [SerializeField] float attackSpeed = 2;
+    float nextAttackTime = 0f;
+
 
     void Start()
     {
@@ -18,29 +24,63 @@ public class Unit : MonoBehaviour
 
     void ReceiveDamage(float damage) {
         health -= damage;
+
+        if (health <= 0) {
+            health = 0;
+            Destroy(gameObject);
+        }
     }
 
     public bool canMove() {        
-        RaycastHit hit;
-        int layerMask = 1 << 6;
+        int allyLayer = (gameObject.tag == "Team 1") ? 6 : 7;
+        int layerMask = 1 << allyLayer;
 
-        Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, sightRange, layerMask);
+        RaycastHit hit;
+        float stopRange = 1.5f;
+        Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, stopRange, layerMask);
 
         if (hit.collider != null) {
-            Debug.Log(hit.transform.name);
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right) * hit.distance, Color.blue);
-
-            // if (
-            //     (gameObject.tag == "Team 1" && hit.collider.gameObject.tag == "Team 2") ||
-            //     (gameObject.tag == "Team 2" && hit.collider.gameObject.tag == "Team 1")
-            // ) {
-                
-            // }
             return false;
-        } else {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right) * sightRange, Color.white);
         }
 
         return true;
+    }
+
+    public bool canAttack() {        
+        int enemyLayer = (gameObject.tag == "Team 1") ? 7 : 6;
+        int layerMask = 1 << enemyLayer;
+
+        RaycastHit hit;
+        Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, hitRange, layerMask);
+
+        if (hit.collider != null) {
+            if (
+                (gameObject.tag == "Team 1" && hit.collider.gameObject.tag == "Team 2") ||
+                (gameObject.tag == "Team 2" && hit.collider.gameObject.tag == "Team 1")
+            ) {
+                DrawRay(hit.distance, Color.blue);
+
+                if (Time.time >= nextAttackTime) {
+                    Attack(hit.collider.gameObject);
+                    nextAttackTime = Time.time + 1f / attackSpeed;
+                }
+                
+                return true;
+            } else {
+                DrawRay(hit.distance, Color.white);
+            }
+        } else {
+            DrawRay(hitRange, Color.white);
+        }
+
+        return false;
+    }
+
+    void Attack(GameObject enemy) {
+            enemy.GetComponent<Unit>().ReceiveDamage(attackDamage);
+    }
+
+    void DrawRay (float length, Color color) {
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right) * length, color);
     }
 }

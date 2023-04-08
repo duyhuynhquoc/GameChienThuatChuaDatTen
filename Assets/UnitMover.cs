@@ -14,7 +14,7 @@ public class UnitMover : MonoBehaviour
 
     void Update()
     {
-        if (unit.canMove()) {
+        if (unit.canMove() && !unit.canAttack()) {
             Move();
         }
     }

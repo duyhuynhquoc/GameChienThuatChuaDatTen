@@ -35,9 +35,11 @@ public class UnitSpawner : MonoBehaviour
     }
 
     public void SpawnUnit(GameObject unit) {
+        // Player 1
         Vector3 position = new Vector3(transform.position.x + 10, 1, transform.position.z);
         GameObject spawnedUnit = Instantiate(unit, position, Quaternion.identity);
         spawnedUnit.gameObject.tag = "Team 1";
+        spawnedUnit.gameObject.layer = 6;
     }
 
     public void Spawn1(InputAction.CallbackContext context) {

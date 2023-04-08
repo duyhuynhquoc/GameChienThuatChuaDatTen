@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7716871766275179393}
   - component: {fileID: -2891562328079153168}
   - component: {fileID: 7586794953354312669}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
-  isStopped: 0
 --- !u!114 &7586794953354312669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,4 +143,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  sightRange: 1
+  hitRange: 10
