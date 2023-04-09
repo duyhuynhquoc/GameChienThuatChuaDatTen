@@ -147,3 +147,4 @@ MonoBehaviour:
   attackType: 0
   attackDamage: 0
   attackSpeed: 2
+  rangedAttack: {fileID: 0}
