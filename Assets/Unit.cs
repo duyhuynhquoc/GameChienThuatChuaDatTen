@@ -2,24 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+enum AttackType 
+{
+  Melee,
+  Ranged,
+}
+
 public class Unit : MonoBehaviour
 {
     [SerializeField] float health = 0f;
     [SerializeField] float hitRange = 10f;
+    [SerializeField] AttackType attackType;
     [SerializeField] float attackDamage = 0f;
 
     [Tooltip("Number of attacks perform in 1s")]
     [SerializeField] float attackSpeed = 2;
+    
+    [Tooltip("Ranged attack particle system")]
+    [SerializeField] GameObject rangedAttack;
+    
     float nextAttackTime = 0f;
 
+    int allyLayerMask;
+    int enemyLayerMask;
 
-    void Start()
-    {
-        
+
+    void Start() {
+        int allyLayer = (gameObject.tag == "Team 1") ? 6 : 7;
+        allyLayerMask = 1 << allyLayer;
+
+        int enemyLayer = (gameObject.tag == "Team 1") ? 7 : 6;
+        enemyLayerMask = 1 << enemyLayer;
+
+        if (attackType == AttackType.Ranged) {
+            ParticleSystem particleSystem = rangedAttack.GetComponent<ParticleSystem>();
+            ParticleSystem.CollisionModule collisionModule = particleSystem.collision;
+            collisionModule.collidesWith = enemyLayerMask;
+        }
     }
 
-    void Update()
-    {
+    void Update() {
+    }
+
+    private void OnParticleCollision(GameObject other) {
+        Debug.Log(other.gameObject.name);
+        float damage = other.GetComponent<RangedAttack>().getDamage();
+        ReceiveDamage(damage);
     }
 
     void ReceiveDamage(float damage) {
@@ -31,27 +59,21 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public bool canMove() {        
-        int allyLayer = (gameObject.tag == "Team 1") ? 6 : 7;
-        int layerMask = 1 << allyLayer;
-
+    public bool IsAllyAhead() {        
         RaycastHit hit;
         float stopRange = 1.5f;
-        Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, stopRange, layerMask);
+        Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, stopRange, allyLayerMask);
 
         if (hit.collider != null) {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
-    public bool canAttack() {        
-        int enemyLayer = (gameObject.tag == "Team 1") ? 7 : 6;
-        int layerMask = 1 << enemyLayer;
-
+    public GameObject FirstEnemyInRange() {        
         RaycastHit hit;
-        Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, hitRange, layerMask);
+        Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, hitRange, enemyLayerMask);
 
         if (hit.collider != null) {
             if (
@@ -59,13 +81,8 @@ public class Unit : MonoBehaviour
                 (gameObject.tag == "Team 2" && hit.collider.gameObject.tag == "Team 1")
             ) {
                 DrawRay(hit.distance, Color.blue);
-
-                if (Time.time >= nextAttackTime) {
-                    Attack(hit.collider.gameObject);
-                    nextAttackTime = Time.time + 1f / attackSpeed;
-                }
                 
-                return true;
+                return hit.collider.gameObject;
             } else {
                 DrawRay(hit.distance, Color.white);
             }
@@ -73,11 +90,43 @@ public class Unit : MonoBehaviour
             DrawRay(hitRange, Color.white);
         }
 
-        return false;
+        return null;
     }
 
-    void Attack(GameObject enemy) {
-            enemy.GetComponent<Unit>().ReceiveDamage(attackDamage);
+    public void StartAttack(GameObject enemy) {
+        switch (attackType) {
+            case AttackType.Melee:
+                if (Time.time >= nextAttackTime) {
+                    Unit enemyUnit = enemy.GetComponent<Unit>();
+                    enemyUnit.ReceiveDamage(attackDamage);
+
+                    // Next attack cool down
+                    nextAttackTime = Time.time + 1f / attackSpeed;
+                }
+
+                break;
+            case AttackType.Ranged:
+                ActivateRangedAttack();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void StopAttack() {
+        DeactivateRangedAttack();
+    }
+
+    public void ActivateRangedAttack() {
+        if (rangedAttack != null) {
+            rangedAttack.SetActive(true);
+        }
+    }
+
+    public void DeactivateRangedAttack() {
+        if (rangedAttack != null) {
+            rangedAttack.SetActive(false);
+        }
     }
 
     void DrawRay (float length, Color color) {

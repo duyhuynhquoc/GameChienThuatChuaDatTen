@@ -13,10 +13,19 @@ public class UnitMover : MonoBehaviour
     }
 
     void Update()
-    {
-        if (unit.canMove() && !unit.canAttack()) {
+    {   
+        GameObject enemy = unit.FirstEnemyInRange();
+        
+        if (enemy != null) {
+            unit.StartAttack(enemy);
+        } else {
+            unit.StopAttack();
+        }
+
+        if (!unit.IsAllyAhead() && enemy == null) {
             Move();
         }
+
     }
 
     public void Move() {
