@@ -2,14 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+enum AttackType 
+{
+  Melee,
+  Ranged,
+}
+
 public class Unit : MonoBehaviour
 {
     [SerializeField] float health = 0f;
     [SerializeField] float hitRange = 10f;
+    [SerializeField] AttackType attackType;
     [SerializeField] float attackDamage = 0f;
 
     [Tooltip("Number of attacks perform in 1s")]
     [SerializeField] float attackSpeed = 2;
+    
+    [Tooltip("Ranged attack particle system")]
+    [SerializeField] GameObject rangedAttack;
+    
     float nextAttackTime = 0f;
 
 
@@ -22,6 +33,11 @@ public class Unit : MonoBehaviour
     {
     }
 
+    private void OnParticleCollision(GameObject other) {
+        float damage = other.GetComponent<RangedAttack>().getDamage();
+        ReceiveDamage(damage);
+    }
+
     void ReceiveDamage(float damage) {
         health -= damage;
 
@@ -31,7 +47,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public bool canMove() {        
+    public bool IsAllyAhead() {        
         int allyLayer = (gameObject.tag == "Team 1") ? 6 : 7;
         int layerMask = 1 << allyLayer;
 
@@ -40,13 +56,13 @@ public class Unit : MonoBehaviour
         Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, stopRange, layerMask);
 
         if (hit.collider != null) {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
-    public bool canAttack() {        
+    public GameObject FirstEnemyInRange() {        
         int enemyLayer = (gameObject.tag == "Team 1") ? 7 : 6;
         int layerMask = 1 << enemyLayer;
 
@@ -60,12 +76,12 @@ public class Unit : MonoBehaviour
             ) {
                 DrawRay(hit.distance, Color.blue);
 
-                if (Time.time >= nextAttackTime) {
+                if (Time.time >= nextAttackTime && attackType == AttackType.Melee) {
                     Attack(hit.collider.gameObject);
                     nextAttackTime = Time.time + 1f / attackSpeed;
                 }
                 
-                return true;
+                return hit.collider.gameObject;
             } else {
                 DrawRay(hit.distance, Color.white);
             }
@@ -73,14 +89,27 @@ public class Unit : MonoBehaviour
             DrawRay(hitRange, Color.white);
         }
 
-        return false;
+        return null;
     }
 
     void Attack(GameObject enemy) {
-            enemy.GetComponent<Unit>().ReceiveDamage(attackDamage);
+        Unit enemyUnit = enemy.GetComponent<Unit>();
+        enemyUnit.ReceiveDamage(attackDamage);
     }
 
     void DrawRay (float length, Color color) {
         Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right) * length, color);
+    }
+
+    public void ActivateRangedAttack() {
+        if (rangedAttack != null) {
+            rangedAttack.SetActive(true);
+        }
+    }
+
+    public void DeactivateRangedAttack() {
+        if (rangedAttack != null) {
+            rangedAttack.SetActive(false);
+        }
     }
 }

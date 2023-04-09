@@ -14,9 +14,16 @@ public class UnitMover : MonoBehaviour
 
     void Update()
     {
-        if (unit.canMove() && !unit.canAttack()) {
+        if (unit.FirstEnemyInRange() == null) {
+            unit.DeactivateRangedAttack();
+        } else {
+            unit.ActivateRangedAttack();
+        }
+
+        if (!unit.IsAllyAhead() && unit.FirstEnemyInRange() == null) {
             Move();
         }
+
     }
 
     public void Move() {
