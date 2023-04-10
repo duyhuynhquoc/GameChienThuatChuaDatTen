@@ -17,7 +17,7 @@ public class UiController : MonoBehaviour
         unitSpawner = GameObject.Find("Player Units Spawner").GetComponent<UnitSpawner>();
 
         for (int i = 0; i < unitSpawner.GetUnitGameObjects.Length; ++i) {
-            Vector3 position = new Vector3(-484 + 58 * i, 220, 0);
+            Vector3 position = new Vector3(66 + 98 * i, -150, 0);
 
             GameObject button = Instantiate(buttonPrefab, position, Quaternion.identity);
             button.transform.SetParent(canvas.transform, false);

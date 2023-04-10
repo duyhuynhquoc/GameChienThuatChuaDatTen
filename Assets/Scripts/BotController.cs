@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class BotController : MonoBehaviour
 {
+    [SerializeField] bool isActive = true;
     UnitSpawner unitSpawner;
     Queue<int> commandList;
+    GameController gameController;
+
 
     void Start() {
         unitSpawner = GetComponent<UnitSpawner>();
+        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
         commandList = new Queue<int>();
     }
 
@@ -20,10 +24,12 @@ public class BotController : MonoBehaviour
             commandList.Enqueue(4);
         }
 
-        int command = commandList.Peek();
-        if (unitSpawner.CanSpawn(command - 1)) {
-            unitSpawner.Spawn(command - 1);
-            commandList.Dequeue();
+        if (gameController.GetIsGameStarted() && isActive) {
+            int command = commandList.Peek();
+            if (unitSpawner.CanSpawn(command - 1)) {
+                unitSpawner.Spawn(command - 1);
+                commandList.Dequeue();
+            }
         }
     }
 }

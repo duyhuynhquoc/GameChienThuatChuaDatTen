@@ -15,7 +15,10 @@ public class UnitSpawner : MonoBehaviour
 
     PlayerInputActions input;
 
+    GameController gameController;
+
     bool isBot;
+    bool isPlayerInputActive;
 
     private void Awake() {
         input = new PlayerInputActions();
@@ -33,6 +36,7 @@ public class UnitSpawner : MonoBehaviour
         team = gameObject.tag;
         resourceController = GetComponent<ResourceController>();
         isBot = (GetComponent<BotController>() != null);
+        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
 
         units = new List<Unit>();
 
@@ -80,6 +84,8 @@ public class UnitSpawner : MonoBehaviour
     }
 
     public void Spawn(int i) {
+        if (!gameController.GetIsGameStarted()) return;
+
         if (!CanSpawn(i)) return;
 
         SpawnUnit(unitGameObjects[i]);
@@ -88,4 +94,8 @@ public class UnitSpawner : MonoBehaviour
     }
 
     public GameObject[] GetUnitGameObjects => unitGameObjects;
+
+    public void SetIsPlayerInputActive (bool isPlayerInputActive) {
+        this.isPlayerInputActive = isPlayerInputActive;
+    }
 }
