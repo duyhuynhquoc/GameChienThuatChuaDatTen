@@ -10,10 +10,14 @@ enum AttackType
 
 public class Unit : MonoBehaviour
 {
+    [Header("Spawning properties")]
     [SerializeField] int cost;
+    [SerializeField] float spawnTime;
+
+    [Header("Fighting properties")]
     [SerializeField] float health = 0f;
-    [SerializeField] float hitRange = 10f;
     [SerializeField] AttackType attackType;
+    [SerializeField] float hitRange = 10f;
     [SerializeField] float attackDamage = 0f;
 
     [Tooltip("Number of attacks perform in 1s")]
@@ -131,6 +135,10 @@ public class Unit : MonoBehaviour
 
     public int GetCost() {
         return cost;
+    }
+
+    public float GetSpawnTime() {
+        return spawnTime;
     }
 
     void DrawRay (float length, Color color) {

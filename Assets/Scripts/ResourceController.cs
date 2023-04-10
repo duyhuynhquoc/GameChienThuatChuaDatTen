@@ -9,7 +9,13 @@ public class ResourceController : MonoBehaviour
     [SerializeField] int increasingGoldsByTime = 5;
     [SerializeField] TMP_Text goldTMP;
 
+    bool isBot = false;
+
     void Start() {
+        if (GetComponent<BotController>() != null) {
+            isBot = true;
+        }
+
         UpdateGoldText();
         StartCoroutine(IncreaseGoldsByTime());
     }
@@ -33,6 +39,8 @@ public class ResourceController : MonoBehaviour
     }
 
     public void UpdateGoldText() {
-        goldTMP.text = golds.ToString();
+        if (!isBot) {
+            goldTMP.text = golds.ToString();
+        }
     }
 }

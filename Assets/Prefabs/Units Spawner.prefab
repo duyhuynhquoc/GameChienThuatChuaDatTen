@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6412844577397531210}
   - component: {fileID: 6412844577397531212}
+  - component: {fileID: 333183705}
   m_Layer: 0
   m_Name: Units Spawner
   m_TagString: Untagged
@@ -45,7 +46,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77a43b39cd79f45d88a9124d2327c7e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  units: []
+  unitGameObjects:
+  - {fileID: 1747663440669430967, guid: 5fd9aa3d818994affb39fd7c5f42f164, type: 3}
+  - {fileID: 2298081865344314869, guid: e24f76e56b0c9494d92f70a393632ad5, type: 3}
+  - {fileID: 7957970033500525781, guid: 8670a9a95ebb04756868857640883e50, type: 3}
+--- !u!114 &333183705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6412844577397531208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 519fa094d306e4142922712a7f4dc70c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  golds: 500
+  increasingGoldsByTime: 5
+  goldTMP: {fileID: 0}
 --- !u!1 &6412844577725011858
 GameObject:
   m_ObjectHideFlags: 0
