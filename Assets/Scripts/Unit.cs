@@ -49,7 +49,6 @@ public class Unit : MonoBehaviour
     }
 
     private void OnParticleCollision(GameObject other) {
-        Debug.Log(other.gameObject.name);
         float damage = other.GetComponent<RangedAttack>().getDamage();
         ReceiveDamage(damage);
     }

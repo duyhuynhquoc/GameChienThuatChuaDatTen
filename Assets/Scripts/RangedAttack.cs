@@ -19,8 +19,4 @@ public class RangedAttack : MonoBehaviour
     public float getDamage() {
         return damage;
     }
-
-    private void OnTriggerEnter(Collider other) {
-        Debug.Log(other.gameObject.name);
-    }
 }

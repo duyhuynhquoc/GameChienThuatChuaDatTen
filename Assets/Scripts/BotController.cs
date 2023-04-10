@@ -17,8 +17,7 @@ public class BotController : MonoBehaviour
             commandList.Enqueue(1);
             commandList.Enqueue(2);
             commandList.Enqueue(3);
-            commandList.Enqueue(3);
-            commandList.Enqueue(3);
+            commandList.Enqueue(4);
         }
 
         int command = commandList.Peek();

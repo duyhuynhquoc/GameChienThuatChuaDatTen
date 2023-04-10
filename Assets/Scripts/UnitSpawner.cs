@@ -15,6 +15,8 @@ public class UnitSpawner : MonoBehaviour
 
     PlayerInputActions input;
 
+    bool isBot;
+
     private void Awake() {
         input = new PlayerInputActions();
     }
@@ -30,6 +32,7 @@ public class UnitSpawner : MonoBehaviour
     void Start() {
         team = gameObject.tag;
         resourceController = GetComponent<ResourceController>();
+        isBot = (GetComponent<BotController>() != null);
 
         units = new List<Unit>();
 
@@ -38,10 +41,13 @@ public class UnitSpawner : MonoBehaviour
         }
     }
 
-    void Update() {
-        input.Player.Spawn1.performed += _ => Spawn(0);
-        input.Player.Spawn2.performed += _ => Spawn(1);
-        input.Player.Spawn3.performed += _ => Spawn(2);
+    void Update() {      
+        if (!isBot) {
+            input.Player.Spawn1.performed += _ => Spawn(0);
+            input.Player.Spawn2.performed += _ => Spawn(1);
+            input.Player.Spawn3.performed += _ => Spawn(2);
+            input.Player.Spawn4.performed += _ => Spawn(3);
+        }
     }
 
     public void SpawnUnit(GameObject unit) {
@@ -74,7 +80,7 @@ public class UnitSpawner : MonoBehaviour
 
         SpawnUnit(unitGameObjects[i]);
         resourceController.SetGolds(golds - units[i].GetCost());
-        nextSpawnTime += units[i].GetSpawnTime();
+        nextSpawnTime = Time.time + units[i].GetSpawnTime();
         return true;
     }
 }
