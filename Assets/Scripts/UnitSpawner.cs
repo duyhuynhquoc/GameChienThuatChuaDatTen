@@ -69,18 +69,23 @@ public class UnitSpawner : MonoBehaviour
         }
     }
 
-    public bool Spawn(int i) {
-        int golds = resourceController.GetGolds();
-
+    public bool CanSpawn(int i) {
         if (Time.time < nextSpawnTime) return false;
 
-        if (golds < units[i].GetCost()) {
+        if (resourceController.GetGolds() < units[i].GetCost()) {
             return false;
         }
 
-        SpawnUnit(unitGameObjects[i]);
-        resourceController.SetGolds(golds - units[i].GetCost());
-        nextSpawnTime = Time.time + units[i].GetSpawnTime();
         return true;
     }
+
+    public void Spawn(int i) {
+        if (!CanSpawn(i)) return;
+
+        SpawnUnit(unitGameObjects[i]);
+        resourceController.SetGolds(resourceController.GetGolds() - units[i].GetCost());
+        nextSpawnTime = Time.time + units[i].GetSpawnTime();
+    }
+
+    public GameObject[] GetUnitGameObjects => unitGameObjects;
 }

@@ -21,7 +21,8 @@ public class BotController : MonoBehaviour
         }
 
         int command = commandList.Peek();
-        if (unitSpawner.Spawn(command - 1)) {
+        if (unitSpawner.CanSpawn(command - 1)) {
+            unitSpawner.Spawn(command - 1);
             commandList.Dequeue();
         }
     }
