@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Base : MonoBehaviour
 {
+    GameController gameController;
+
     [SerializeField] int health = 5;
 
     string enemyTag;
@@ -11,11 +13,19 @@ public class Base : MonoBehaviour
     void Start()
     {
         enemyTag = (gameObject.tag == "Team 1") ? "Team 2" : "Team 1";
+        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
+
     }
 
     void Update()
     {
-        
+        if (health <= 0) {
+            if (gameObject.tag == "Team 1") {
+                gameController.Lose();
+            } else {
+                gameController.Win();
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other) {

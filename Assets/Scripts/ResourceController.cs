@@ -9,18 +9,27 @@ public class ResourceController : MonoBehaviour
     [SerializeField] int increasingGoldsByTime = 5;
     [SerializeField] TMP_Text goldTMP;
 
+
+    GameController gameController;
     bool isBot = false;
+    bool hasStartedIncreasingGold = false;
 
     void Start() {
+        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
+
         if (GetComponent<BotController>() != null) {
             isBot = true;
         }
 
         UpdateGoldText();
-        StartCoroutine(IncreaseGoldsByTime());
+        
     }
 
     void Update() {
+        if (gameController.GetIsGameStarted() && !hasStartedIncreasingGold) {
+            hasStartedIncreasingGold = true;
+            StartCoroutine(IncreaseGoldsByTime());
+        }
     }
 
     IEnumerator IncreaseGoldsByTime() {
