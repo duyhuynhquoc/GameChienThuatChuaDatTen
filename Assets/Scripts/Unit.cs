@@ -10,6 +10,7 @@ enum AttackType
 
 public class Unit : MonoBehaviour
 {
+    [SerializeField] int cost;
     [SerializeField] float health = 0f;
     [SerializeField] float hitRange = 10f;
     [SerializeField] AttackType attackType;
@@ -25,7 +26,6 @@ public class Unit : MonoBehaviour
 
     int allyLayerMask;
     int enemyLayerMask;
-
 
     void Start() {
         int allyLayer = (gameObject.tag == "Team 1") ? 6 : 7;
@@ -127,6 +127,10 @@ public class Unit : MonoBehaviour
         if (rangedAttack != null) {
             rangedAttack.SetActive(false);
         }
+    }
+
+    public int GetCost() {
+        return cost;
     }
 
     void DrawRay (float length, Color color) {
