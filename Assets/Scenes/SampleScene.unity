@@ -141,6 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   golds: 500
+  increasingGoldsByTime: 5
   goldTMP: {fileID: 926535154}
 --- !u!1 &335568278
 GameObject:
